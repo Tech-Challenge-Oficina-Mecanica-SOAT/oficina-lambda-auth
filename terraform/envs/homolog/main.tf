@@ -26,6 +26,8 @@ module "api_gateway" {
   lambda_arn           = module.lambda.function_arn
   lambda_invoke_arn    = module.lambda.invoke_arn
   lambda_function_name = module.lambda.function_name
+  nlb_endpoint         = var.nlb_endpoint
+  vpc_link_subnet_ids  = var.vpc_link_subnet_ids
 
   depends_on = [module.lambda]
 }
