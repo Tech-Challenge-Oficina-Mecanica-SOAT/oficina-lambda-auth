@@ -11,7 +11,7 @@ function gerarToken(cliente, secretKey) {
     iat: now,
     exp: now + expiresIn,
     iss: 'oficina-mecanica-lambda',
-    aud: 'oficina-mecanica-api'
+    aud: 'mecanica-cliente'
   };
 
   const token = jwt.sign(payload, secretKey, { algorithm: 'HS256' });

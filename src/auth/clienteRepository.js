@@ -24,8 +24,8 @@ async function buscarClientePorCpf(cpf, dbConfig) {
   const client = await getPool(dbConfig).connect();
 
   try {
-    const result = await client.query(
-      'SELECT id, email, ativo FROM "Clientes" WHERE "Documento" = $1 LIMIT 1',
+      const result = await client.query(
+      'SELECT "Id", "Email", "Ativo" FROM "Clientes" WHERE "Documento" = $1',
       [cpf]
     );
 
