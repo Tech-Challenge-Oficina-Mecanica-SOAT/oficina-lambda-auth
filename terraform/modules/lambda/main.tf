@@ -9,8 +9,8 @@ terraform {
 
 # ─── Data sources ────────────────────────────────────────────
 
-data "aws_iam_roles" {
-  name_regex = "...LabRole..."
+data "aws_iam_roles" "lab_role" {
+  name_regex = ".*LabRole.*"
 }
 
 data "aws_ssm_parameter" "db_endpoint" {
