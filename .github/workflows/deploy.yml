@@ -1,8 +1,15 @@
 name: Deploy
 
 on:
-  push:
-    branches: [main, homolog]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Ambiente de deploy'
+        required: true
+        default: 'homolog'
+        type: choice
+        options:
+          - homolog
 
 jobs:
   deploy:
@@ -30,12 +37,7 @@ jobs:
 
       - name: Definir ambiente
         id: env
-        run: |
-          if [ "${{ github.ref_name }}" = "main" ]; then
-            echo "environment=prod" >> $GITHUB_OUTPUT
-          else
-            echo "environment=homolog" >> $GITHUB_OUTPUT
-          fi
+        run: echo "environment=${{ inputs.environment }}" >> $GITHUB_OUTPUT
 
       - name: Configurar credenciais AWS
         uses: aws-actions/configure-aws-credentials@v4
