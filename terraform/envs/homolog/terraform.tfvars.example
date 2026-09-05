@@ -7,8 +7,17 @@ vpc_subnet_ids = ["subnet-xxxxxxxxxxxxxxxxx", "subnet-yyyyyyyyyyyyyyyyy"]
 # Security groups publicados por P4
 vpc_security_group_ids = ["sg-xxxxxxxxxxxxxxxxx"]
 
-# Endpoint do NLB do EKS — preencher quando P3 entregar
+# Endpoint do NLB do EKS — preencher quando P3 entregar. Só funciona como
+# "liga/desliga" a criação do VPC Link; o ARN real do listener é resolvido
+# internamente por tag (o NLB é recriado toda vez que o Service do EKS é
+# recriado, então o hostname sozinho não é confiável).
 # nlb_endpoint = "internal-xxxx.elb.us-east-1.amazonaws.com"
 
 # Subnets para o VPC Link — preencher quando P3 entregar
 # vpc_link_subnet_ids = ["subnet-xxxxxxxxxxxxxxxxx"]
+
+# Security group do VPC Link — o SG default da VPC pode não ter regra
+# nenhuma; sem um SG que libere o tráfego até o node do EKS, a integração
+# falha com 503 Service Unavailable. Reaproveitar o SG do cluster EKS
+# costuma resolver (já libera tudo pra si mesmo).
+# vpc_link_security_group_ids = ["sg-xxxxxxxxxxxxxxxxx"]
