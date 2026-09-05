@@ -35,13 +35,13 @@ async function buscarClientePorCpf(cpf, dbConfig) {
 
     const cliente = result.rows[0];
 
-    if (!cliente.ativo) {
+    if (!cliente.Ativo) {
       throw new ClienteInativoError();
     }
 
     return {
-      id: cliente.id,
-      email: cliente.email
+      id: cliente.Id,
+      email: cliente.Email
     };
   } finally {
     client.release();
