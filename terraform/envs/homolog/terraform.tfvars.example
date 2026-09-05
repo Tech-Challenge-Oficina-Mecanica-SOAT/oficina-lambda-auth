@@ -1,0 +1,14 @@
+# Copie este arquivo para terraform.tfvars e preencha com os valores reais
+# NUNCA commite o terraform.tfvars — ele já está no .gitignore
+
+# Subnets privadas publicadas por P4
+vpc_subnet_ids = ["subnet-xxxxxxxxxxxxxxxxx", "subnet-yyyyyyyyyyyyyyyyy"]
+
+# Security groups publicados por P4
+vpc_security_group_ids = ["sg-xxxxxxxxxxxxxxxxx"]
+
+# Endpoint do NLB do EKS — preencher quando P3 entregar
+# nlb_endpoint = "internal-xxxx.elb.us-east-1.amazonaws.com"
+
+# Subnets para o VPC Link — preencher quando P3 entregar
+# vpc_link_subnet_ids = ["subnet-xxxxxxxxxxxxxxxxx"]
