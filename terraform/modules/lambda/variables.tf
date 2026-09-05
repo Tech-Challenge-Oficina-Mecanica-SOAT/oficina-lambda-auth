@@ -17,3 +17,8 @@ variable "vpc_security_group_ids" {
   description = "IDs dos security groups (publicados por P4)"
   type        = list(string)
 }
+
+variable "lab_role_arn" {
+  description = "ARN do LabRole da AWS Academy"
+  type        = string
+}

@@ -12,12 +12,17 @@ provider "aws" {
   region = "us-east-1"
 }
 
+data "aws_iam_role" "lab_role" {
+  name = "LabRole"
+}
+
 module "lambda" {
   source                 = "../../modules/lambda"
   environment            = "homolog"
   lambda_zip_path        = "${path.root}/../../../lambda.zip"
   vpc_subnet_ids         = var.vpc_subnet_ids
   vpc_security_group_ids = var.vpc_security_group_ids
+  lab_role_arn           = data.aws_iam_role.lab_role.arn
 }
 
 module "api_gateway" {
