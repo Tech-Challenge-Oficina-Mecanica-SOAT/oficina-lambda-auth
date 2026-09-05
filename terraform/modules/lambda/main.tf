@@ -7,9 +7,14 @@ terraform {
   }
 }
 
-variable "lab_role_arn" {
-  description = "ARN do LabRole da AWS Academy"
-  type        = string
+# ─── Data sources ────────────────────────────────────────────
+
+data "aws_iam_roles" "lab_role" {
+  name_regex = ".*LabRole.*"
+}
+
+data "aws_ssm_parameter" "db_endpoint" {
+  name = "/oficina/${var.environment}/db/endpoint"
 }
 
 resource "aws_lambda_function" "auth_cpf" {
