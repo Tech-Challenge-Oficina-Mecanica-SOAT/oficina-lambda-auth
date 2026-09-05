@@ -91,11 +91,31 @@ resource "aws_lambda_permission" "api_gateway" {
 
 # ─── VPC Link + Integração EKS (/api/* e /publico/*) ─────────
 # Criado apenas se o endpoint do NLB for fornecido por P3
+#
+# Integração HTTP_PROXY sobre VPC_LINK exige o ARN do listener do NLB,
+# não aceita hostname/URL (a API rejeita com "integration uri should be
+# a valid ELB listener ARN"). O NLB é recriado pelo controller do EKS
+# toda vez que o Service oficina-api é recriado (ARN e DNS mudam), então
+# em vez de depender do hostname (var.nlb_endpoint só serve de gate aqui),
+# buscamos o NLB pelas tags que o proprio controller do EKS sempre seta.
+
+data "aws_lb" "eks" {
+  count = var.nlb_endpoint != "" ? 1 : 0
+  tags = {
+    "kubernetes.io/service-name" = "oficina/oficina-api"
+  }
+}
+
+data "aws_lb_listener" "eks" {
+  count             = var.nlb_endpoint != "" ? 1 : 0
+  load_balancer_arn = data.aws_lb.eks[0].arn
+  port              = 80
+}
 
 resource "aws_apigatewayv2_vpc_link" "eks" {
   count              = var.nlb_endpoint != "" ? 1 : 0
   name               = "oficina-vpc-link-${var.environment}"
-  security_group_ids = []
+  security_group_ids = var.vpc_link_security_group_ids
   subnet_ids         = var.vpc_link_subnet_ids
 
   tags = {
@@ -108,7 +128,7 @@ resource "aws_apigatewayv2_integration" "eks" {
   count              = var.nlb_endpoint != "" ? 1 : 0
   api_id             = aws_apigatewayv2_api.main.id
   integration_type   = "HTTP_PROXY"
-  integration_uri    = "http://${var.nlb_endpoint}/{proxy}"
+  integration_uri    = data.aws_lb_listener.eks[0].arn
   integration_method = "ANY"
   connection_type    = "VPC_LINK"
   connection_id      = aws_apigatewayv2_vpc_link.eks[0].id

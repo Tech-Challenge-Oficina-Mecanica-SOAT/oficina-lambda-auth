@@ -26,13 +26,14 @@ module "lambda" {
 }
 
 module "api_gateway" {
-  source               = "../../modules/api-gateway"
-  environment          = "homolog"
-  lambda_arn           = module.lambda.function_arn
-  lambda_invoke_arn    = module.lambda.invoke_arn
-  lambda_function_name = module.lambda.function_name
-  nlb_endpoint         = var.nlb_endpoint
-  vpc_link_subnet_ids  = var.vpc_link_subnet_ids
+  source                      = "../../modules/api-gateway"
+  environment                 = "homolog"
+  lambda_arn                  = module.lambda.function_arn
+  lambda_invoke_arn           = module.lambda.invoke_arn
+  lambda_function_name        = module.lambda.function_name
+  nlb_endpoint                = var.nlb_endpoint
+  vpc_link_subnet_ids         = var.vpc_link_subnet_ids
+  vpc_link_security_group_ids = var.vpc_link_security_group_ids
 
   depends_on = [module.lambda]
 }

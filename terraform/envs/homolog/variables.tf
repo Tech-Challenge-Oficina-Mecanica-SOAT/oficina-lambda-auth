@@ -19,3 +19,9 @@ variable "vpc_link_subnet_ids" {
   type        = list(string)
   default     = []
 }
+
+variable "vpc_link_security_group_ids" {
+  description = "Security groups do VPC Link (ex: o SG do cluster EKS, publicado por P3)"
+  type        = list(string)
+  default     = []
+}
